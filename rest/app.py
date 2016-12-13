@@ -58,7 +58,7 @@ class GetEndPoints(Resource):
     """
     
     def get(self):
-        r = rest.rest()
+        r = rest()
         services = r.get_available_services()
         
         links = {'_self' : request.url_root + 'api'}

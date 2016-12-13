@@ -32,7 +32,7 @@ def ping(a, b):
     b : dict
         'a' is the registry key
     """
-    r = rest.rest()
+    r = rest()
     
     for service in b[str(a)]:
         req = Request(service["url"])
