@@ -62,6 +62,39 @@ Starting the service:
 nohup ${PATH_2_PYENV}/versions/2.7.12/envs/mg-rest-service/bin/waitress-serve --listen=127.0.0.1:5000 rest.app:app &
 ```
 
+# Apache Config
+This is dependent on the version that you are running.
+
+## Apache 2.2 Config
+In Apache 2.2 the `<Location>` tag for the `/api` server need to come last in the list of services so that it is not over written
+```
+<VirtualHost *:80>
+  ServerName www.example.com
+  ServerAlias rest-mug.example.com
+  ServerAlias rest-mug
+  <Proxy *>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+  ProxyRequests Off
+  ProxyPreserveHost On
+  <Location /api/dmp>
+    ProxyPass http://127.0.0.1:5001/api/dmp
+    ProxyPassReverse http://127.0.0.1:5001/api/dmp
+  </Location>
+  <Location /api/adjacency>
+    ProxyPass http://127.0.0.1:5002/api/adjacency
+    ProxyPassReverse http://127.0.0.1:5002/api/adjacency
+  </Location>
+  <Location /api>
+    ProxyPass http://127.0.0.1:5000/api
+    ProxyPassReverse http://127.0.0.1:5000/api
+  </Location>
+  RequestHeader set X-Forwarded-Proto "http"
+</VirtualHost>
+```
+
+
 # RESTful API
 ## List end points
 Request:
