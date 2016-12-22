@@ -16,7 +16,7 @@
 
 from urllib2 import Request, urlopen, URLError
 from dmp import rest
-import json
+import json, os
 
 def ping(a, b):
     """
