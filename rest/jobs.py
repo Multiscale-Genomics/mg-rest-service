@@ -32,7 +32,8 @@ def ping(a, b):
     b : dict
         'a' is the registry key
     """
-    r = rest()
+    cnf_loc=os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
+    r = rest(cnf_loc)
     
     for service in b[str(a)]:
         req = Request(service["url"])

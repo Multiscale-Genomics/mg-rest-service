@@ -14,11 +14,11 @@
    limitations under the License.
 """
 
+import os
 from flask import Flask, make_response, request
 from flask_restful import Api, Resource
 from flask_apscheduler import APScheduler
 
-from dmp import dmp
 from dmp import rest
 
 import logging
@@ -58,7 +58,8 @@ class GetEndPoints(Resource):
     """
     
     def get(self):
-        r = rest()
+        cnf_loc=os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
+        r = rest(cnf_loc)
         services = r.get_available_services()
         
         links = {'_self' : request.url_root + 'api'}
