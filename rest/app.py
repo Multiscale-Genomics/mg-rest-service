@@ -64,7 +64,7 @@ class GetEndPoints(Resource):
         
         links = {'_self' : request.url_root + 'api'}
         for service in services:
-            links['_' + service] = request.url_root + 'api/' + service
+            links['_' + service['name']] = service['url']
         return {
             '_links': links
         }
