@@ -60,7 +60,7 @@ class GetEndPoints(Resource):
     def get(self):
         cnf_loc=os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
         r = rest(cnf_loc)
-        services = r.get_available_services()
+        services = r.get_up_services()
         
         links = {'_self' : request.url_root + 'api'}
         for service in services:
