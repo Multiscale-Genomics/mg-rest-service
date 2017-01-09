@@ -27,7 +27,7 @@ logging.basicConfig()
 class Config(object):
     import json
 
-    with open('./registry.json') as data_file:    
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/registry.json') as data_file:    
         data = json.load(data_file)
     
     JOBS = [

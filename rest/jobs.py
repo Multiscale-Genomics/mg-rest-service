@@ -56,6 +56,6 @@ def ping(a, b):
             r.set_service_status(service["name"], status)
         else:
             description = data["description"] if data.has_key("description") else ""
-            r.add_service(service["name"], service["url"], description, status)
+            r.add_service(service["name"], service["url"], data["description"], status)
         
         #print service["name"] + " - " + str(log)
