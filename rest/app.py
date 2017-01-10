@@ -83,7 +83,11 @@ class ping(Resource):
             "author":  release.__author__,
             "license": release.__license__,
             "name":    release.__rest_name__,
-            "description": release.__description__
+            "description": release.__description__,
+            "_links" : {
+                '_self' : request.url_root + 'api/ping'
+                '_parent' : request.url_root + 'api'
+            }
         }
         return res
 
