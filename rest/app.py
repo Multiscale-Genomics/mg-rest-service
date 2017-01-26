@@ -76,7 +76,7 @@ class ping(Resource):
     """
     
     def get(self):
-        import release
+        from . import release
         res = {
             "status":  "ready",
             "version": release.__version__,
