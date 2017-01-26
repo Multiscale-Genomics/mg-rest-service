@@ -20,7 +20,7 @@ git clone https://github.com/Multiscale-Genomics/mg-rest-service.git
 ```
 To get this to be picked up by pip if part of a webserver then:
 ```
-pip install --editable .
+pip install -e .
 ```
 This should install the required packages listed in the `setup.py` script.
 
