@@ -62,7 +62,7 @@ class GetEndPoints(Resource):
         r = rest(cnf_loc)
         services = r.get_up_services()
         
-        links = {'_self' : request.url_root + 'api'}
+        links = {'_self' : request.base_url}
         for service in services:
             links['_' + service['name']] = service['url']
         return {
@@ -85,8 +85,8 @@ class ping(Resource):
             "name":    release.__rest_name__,
             "description": release.__description__,
             "_links" : {
-                '_self' : request.url_root + 'api/ping',
-                '_parent' : request.url_root + 'api'
+                '_self' : request.url_root + 'mug/api/ping',
+                '_parent' : request.url_root + 'mug/api'
             }
         }
         return res
@@ -97,10 +97,10 @@ Define the URIs and their matching methods
 api = Api(app)
 
 #   List the available end points for this service
-api.add_resource(GetEndPoints, "/api", endpoint='service-root')
+api.add_resource(GetEndPoints, "/mug/api", endpoint='service-root')
 
 #   Service ping
-api.add_resource(ping, "/api/ping", endpoint='service-ping')
+api.add_resource(ping, "/mug/api/ping", endpoint='service-ping')
 
 
 """
