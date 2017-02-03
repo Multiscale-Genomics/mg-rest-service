@@ -53,7 +53,10 @@ def ping(a, b):
             status = "up"
         
         if r.is_service(service["name"]) == True:
+            s = r.get_service(service["name"])
             r.set_service_status(service["name"], status)
+            if s["url"] + "/ping" != service["url"]:
+                r.update_service_url(service["name"], service["url"])
         else:
             description = data["description"] if data.has_key("description") else ""
             r.add_service(service["name"], service["url"], data["description"], status)
