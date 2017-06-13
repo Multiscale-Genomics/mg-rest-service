@@ -15,27 +15,29 @@
 """
 
 from urllib2 import Request, urlopen, URLError
-from dmp import rest
-import json, os
+import json
+import os
 
-def ping(a, b):
+from dmp import rest
+
+def ping(key, registry_key):
     """
     Ping the defined end points to determine if they are valid services. The
     results are then logged and used by the DMP and other service when listing
     what end points are available. This allows for services to drop out and not
     have nodes pointing to those services until they come back.
-    
+
     Parameters
     ----------
-    a : str
+    key : str
         key for the registry dict
-    b : dict
+    registry_key : dict
         'a' is the registry key
     """
-    cnf_loc=os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
-    r = rest(cnf_loc)
-    
-    for service in b[str(a)]:
+    cnf_loc = os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
+    dmp_api = rest(cnf_loc)
+
+    for service in registry_key[str(key)]:
         req = Request(service["url"])
         status = "down"
         log = ""
@@ -45,20 +47,17 @@ def ping(a, b):
             log = response.code
             data = json.loads(response.read())
             response.close()
-        except URLError, e:
-            valid = False
-            log = e.code
-        
+        except URLError, err:
+            log = err
+
         if log == 200:
             status = "up"
-        
-        if r.is_service(service["name"]) == True:
-            s = r.get_service(service["name"])
-            r.set_service_status(service["name"], status)
-            if s["url"] + "/ping" != service["url"]:
-                r.update_service_url(service["name"], service["url"])
+
+        if dmp_api.is_service(service["name"]) is True:
+            service_found = dmp_api.get_service(service["name"])
+            dmp_api.set_service_status(service["name"], status)
+            if service_found["url"] + "/ping" != service["url"]:
+                dmp_api.update_service_url(service["name"], service["url"])
         else:
             description = data["description"] if data.has_key("description") else ""
-            r.add_service(service["name"], service["url"], data["description"], status)
-        
-        #print service["name"] + " - " + str(log)
+            dmp_api.add_service(service["name"], service["url"], description, status)

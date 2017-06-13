@@ -15,21 +15,25 @@
 """
 
 import os
-from flask import Flask, make_response, request
+import logging
+from flask import Flask, request #, make_response
 from flask_restful import Api, Resource
 from flask_apscheduler import APScheduler
 
 from dmp import rest
 
-import logging
 logging.basicConfig()
 
 class Config(object):
+    """
+    Class to handle the spinning off of a separate thread for pinging other
+    servers to test if they are alive.
+    """
     import json
 
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/registry.json') as data_file:    
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/registry.json') as data_file:
         data = json.load(data_file)
-    
+
     JOBS = [
         {
             'id': 'ping',
@@ -43,12 +47,12 @@ class Config(object):
     SCHEDULER_VIEWS_ENABLED = True
 
 
-app = Flask(__name__)
-app.config.from_object(Config())
+APP = Flask(__name__)
+APP.config.from_object(Config())
 
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
+SCHEDULER = APScheduler()
+SCHEDULER.init_app(APP)
+SCHEDULER.start()
 
 
 class GetEndPoints(Resource):
@@ -56,12 +60,25 @@ class GetEndPoints(Resource):
     Class to handle the http requests for returning information about the end
     points
     """
-    
+
     def get(self):
-        cnf_loc=os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
-        r = rest(cnf_loc)
-        services = r.get_up_services()
-        
+        """
+        GET list all end points
+        -----------------------
+
+        List of all of the end points for the current service.
+
+        Example
+        ^^^^^^^
+        .. code-block::
+           :linenos:
+
+           curl -X GET http://localhost:5001/mug/api
+        """
+        cnf_loc = os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
+        dmp_api = rest(cnf_loc)
+        services = dmp_api.get_up_services()
+
         links = {'_self' : request.base_url}
         for service in services:
             links['_' + service['name']] = service['url']
@@ -70,12 +87,28 @@ class GetEndPoints(Resource):
         }
 
 
-class ping(Resource):
+class Ping(Resource):
     """
     Class to handle the http requests to ping a service
     """
-    
+
     def get(self):
+        """
+        GET Status
+        ----------
+
+        List the current status of the service along with the relevant
+        information about the version.
+
+        Example
+        ^^^^^^^
+        .. code-block::
+           :linenos:
+
+           curl -X GET http://localhost:5001/mug/api/ping
+
+
+        """
         from . import release
         res = {
             "status":  "ready",
@@ -91,20 +124,16 @@ class ping(Resource):
         }
         return res
 
-"""
-Define the URIs and their matching methods
-"""
-api = Api(app)
+# Define the URIs and their matching methods
+REST_API = Api(APP)
 
 #   List the available end points for this service
-api.add_resource(GetEndPoints, "/mug/api", endpoint='service-root')
+REST_API.add_resource(GetEndPoints, "/mug/api", endpoint='service-root')
 
 #   Service ping
-api.add_resource(ping, "/mug/api/ping", endpoint='service-ping')
+REST_API.add_resource(Ping, "/mug/api/ping", endpoint='service-ping')
 
 
-"""
-Initialise the server
-"""
+# Initialise the server
 if __name__ == "__main__":
-    app.run(port=5002, debug=True, use_reloader=False)
+    APP.run(port=5000, debug=True, use_reloader=False)
