@@ -73,7 +73,9 @@ define the MongoDB server:
 
 Adding Services
 ^^^^^^^^^^^^^^^
-For each REST service that is to be integrated into the MuG REST service should have the relevant URL and name stored within a registry.json file located in the mg-rest-service directory:
+For each REST service that is to be integrated into the MuG REST service should
+have the relevant URL and name stored within a registry.json file located in the
+mg-rest-service directory:
 
 .. code-block:: none
    :linenos:
@@ -96,7 +98,8 @@ Apache Config
 ^^^^^^^^^^^^^
 This is dependent on the version that you are running.
 
-In Apache 2.2 the `<Location>` tag for the `/api` server need to come last in the list of services so that it is not over written
+In Apache 2.2 the `<Location>` tag for the `/api` server need to come last in
+the list of services so that it is not over written
 
 .. code-block:: none
    :linenos:
