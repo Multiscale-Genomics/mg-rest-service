@@ -13,6 +13,7 @@ Welcome to mg-rest-service's documentation!
    install
    app
    adr
+   license
 
 
 Indices and tables
