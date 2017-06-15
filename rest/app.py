@@ -55,7 +55,7 @@ SCHEDULER.init_app(APP)
 SCHEDULER.start()
 
 
-class GetEndPoints(Resource):
+class EndPoints(Resource):
     """
     Class to handle the http requests for returning information about the end
     points
@@ -64,13 +64,12 @@ class GetEndPoints(Resource):
     def get(self):
         """
         GET list all end points
-        -----------------------
-
+        
         List of all of the end points for the current service.
 
         Example
-        ^^^^^^^
-        .. code-block::
+        -------
+        .. code-block:: none
            :linenos:
 
            curl -X GET http://localhost:5001/mug/api
@@ -95,14 +94,13 @@ class Ping(Resource):
     def get(self):
         """
         GET Status
-        ----------
 
         List the current status of the service along with the relevant
         information about the version.
 
         Example
-        ^^^^^^^
-        .. code-block::
+        -------
+        .. code-block:: none
            :linenos:
 
            curl -X GET http://localhost:5001/mug/api/ping
@@ -128,7 +126,7 @@ class Ping(Resource):
 REST_API = Api(APP)
 
 #   List the available end points for this service
-REST_API.add_resource(GetEndPoints, "/mug/api", endpoint='service-root')
+REST_API.add_resource(EndPoints, "/mug/api", endpoint='service-root')
 
 #   Service ping
 REST_API.add_resource(Ping, "/mug/api/ping", endpoint='service-ping')
