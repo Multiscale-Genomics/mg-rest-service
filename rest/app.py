@@ -73,6 +73,7 @@ class EndPoints(Resource):
            :linenos:
 
            curl -X GET http://localhost:5001/mug/api
+
         """
         cnf_loc = os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
         dmp_api = rest(cnf_loc)
