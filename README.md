@@ -1,6 +1,8 @@
 # mg-rest-service
 Service to monitor and list live REST services
 
+[![Documentation Status](https://readthedocs.org/projects/mg-rest-service/badge/?version=latest)](http://mg-rest-service.readthedocs.org/en/latest/)
+
 # Requirements
 - Mongo DB 3.2
 - Python 2.7.10+
