@@ -76,7 +76,10 @@ class EndPoints(Resource):
 
         """
         cnf_loc = os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
-        dmp_api = rest(cnf_loc)
+        if os.path.isfile(cnf_loc) == True:
+            dmp_api = rest(cnf_loc)
+        else:
+            dmp_api = rest(cnf_loc, test=True)
         services = dmp_api.get_up_services()
 
         links = {'_self' : request.base_url}
