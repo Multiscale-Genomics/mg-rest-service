@@ -36,11 +36,12 @@ def client(request):
 
 def test_endpoints(client):
     rv = client.get('/mug/api')
-    print rv.data
-    assert b'_links' in rv.data
+    details = json.loads(rv.data)
+    #print(details)
+    assert '_links' in details
 
 def test_ping(client):
     rv = client.get('/mug/api/ping')
     details = json.loads(rv.data)
-    print details
+    #print(details)
     assert 'status' in details
