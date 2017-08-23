@@ -1,5 +1,6 @@
 """
-.. Copyright 2017 EMBL-European Bioinformatics Institute
+.. See the NOTICE file distributed with this work for additional information
+   regarding copyright ownership.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,7 +17,7 @@
 
 import os
 import logging
-from flask import Flask, request #, make_response
+from flask import Flask, request
 from flask_restful import Api, Resource
 from flask_apscheduler import APScheduler
 
@@ -61,10 +62,11 @@ class EndPoints(Resource):
     points
     """
 
-    def get(self):
+    @staticmethod
+    def get():
         """
         GET list all end points
-        
+
         List of all of the end points for the current service.
 
         Example
@@ -76,7 +78,7 @@ class EndPoints(Resource):
 
         """
         cnf_loc = os.path.dirname(os.path.abspath(__file__)) + '/mongodb.cnf'
-        if os.path.isfile(cnf_loc) == True:
+        if os.path.isfile(cnf_loc) is True:
             dmp_api = rest(cnf_loc)
         else:
             dmp_api = rest(cnf_loc, test=True)
@@ -95,7 +97,8 @@ class Ping(Resource):
     Class to handle the http requests to ping a service
     """
 
-    def get(self):
+    @staticmethod
+    def get():
         """
         GET Status
 

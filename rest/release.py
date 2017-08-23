@@ -1,5 +1,6 @@
 """
-.. Copyright 2017 EMBL-European Bioinformatics Institute
+.. See the NOTICE file distributed with this work for additional information
+   regarding copyright ownership.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,7 +17,6 @@
 
 __rest_name__ = "Service"
 __description__ = "Main process for checking REST APIs are available"
-__version__   = "v0.0"
-__author__    = "Mark McDowall"
-__license__   = "Apache 2.0"
-
+__version__ = "v0.0"
+__author__ = "Mark McDowall"
+__license__ = "Apache 2.0"
